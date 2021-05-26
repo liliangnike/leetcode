@@ -1,0 +1,34 @@
+/*
+Given the root of a binary search tree, rearrange the tree in in-order so that the leftmost node in the tree is now the root of the tree, and every node has no left child and only one right child.
+*/
+class Solution {
+public:
+    void inorder(TreeNode* root)
+    {
+        if (!root) return;
+        inorder(root->left);
+        tVec.push_back(root->val);
+        inorder(root->right);
+    }
+    
+    TreeNode* increasingBST(TreeNode* root) {
+        inorder(root);
+        
+        TreeNode *res = nullptr;
+        TreeNode *curr = nullptr;
+        
+        res = new TreeNode(tVec[0]);
+        curr = res;
+        for (int i = 1; i < tVec.size(); i++)
+        {
+            TreeNode *tmp = new TreeNode(tVec[i]);
+            curr->right = tmp;
+            curr = tmp;
+        }
+        
+        return res;
+    }
+    
+private:
+    vector<int> tVec;
+};
