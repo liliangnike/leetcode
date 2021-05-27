@@ -1,0 +1,35 @@
+/*
+Given a linked list, swap every two adjacent nodes and return its head. You must solve the problem without modifying the values in the list's nodes (i.e., only nodes themselves may be changed.)
+*/
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        vector<int> vec;
+        if (!head) return nullptr;
+        
+        ListNode *root = head;
+        while(head)
+        {
+            vec.push_back(head->val);
+            head = head->next;
+        }
+        
+        for (int i = 0; i < vec.size(); i++)
+        {
+            if (i < vec.size() - 1)
+            {
+                swap(vec[i], vec[i + 1]);
+                i++;
+            }
+        }
+        
+        ListNode *res = root;
+        for (int i = 0; i < vec.size(); i++)
+        {
+            root->val = vec[i];
+            root = root->next;
+        }
+        
+        return res;
+    }
+};
