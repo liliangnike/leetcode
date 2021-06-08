@@ -1,0 +1,41 @@
+/*
+You are given an array of distinct integers arr and an array of integer arrays pieces, where the integers in pieces are distinct. Your goal is to form arr by concatenating the arrays in pieces in any order. However, you are not allowed to reorder the integers in each array pieces[i].
+
+Return true if it is possible to form the array arr from pieces. Otherwise, return false.
+*/
+
+class Solution {
+public:
+    bool canFormArray(vector<int>& arr, vector<vector<int>>& pieces) {
+        map<int, vector<int>> tmap;
+        vector<int> vec;
+        
+        for (auto v : pieces)
+        {
+            int key = v[0];
+            v.erase(v.begin());
+            tmap[key] = v;
+        }
+        
+        for (auto i : arr)
+        {
+            if (tmap.count(i) > 0)
+            {
+                vec.push_back(i);
+                for (auto j : tmap[i]) 
+                {
+                    vec.push_back(j);
+                }
+            }
+        }
+        
+        if (vec.size() != arr.size()) return false;
+        
+        for (int i = 0; i < arr.size(); i++)
+        {
+            if (arr[i] != vec[i]) return false;
+        }
+        
+        return true;
+    }
+};
