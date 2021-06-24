@@ -1,0 +1,84 @@
+/*
+You are given two non-empty linked lists representing two non-negative integers. The most significant digit comes first and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.
+
+You may assume the two numbers do not contain any leading zero, except the number 0 itself.
+*/
+
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        deque<int> v1;
+        deque<int> v2;
+        deque<int> res;
+        
+        while (l1)
+        {
+            v1.push_back(l1->val);
+            l1 = l1->next;
+        }
+        
+        while (l2)
+        {
+            v2.push_back(l2->val);
+            l2 = l2->next;
+        }
+        
+        auto rit1 = v1.rbegin();
+        auto rit2 = v2.rbegin();
+        int carry = 0;
+        
+        while(rit1 != v1.rend() || rit2 != v2.rend())
+        {
+            int sum = 0;
+            
+            if (rit1 != v1.rend() && rit2 != v2.rend())
+            {
+                sum = *rit1 + *rit2 + carry;
+            }
+            else if (rit1 != v1.rend() && rit2 == v2.rend())
+            {
+                sum = *rit1 + carry;
+            }
+            else if (rit1 == v1.rend() && rit2 != v2.rend())
+            {
+                sum = *rit2 + carry;
+            }
+            
+            if (sum < 10)
+            {
+                res.push_front(sum);
+                carry = 0;
+            }
+            else
+            {
+                carry = sum/10;
+                res.push_front(sum % 10);
+            }
+            
+            if (rit1 != v1.rend()) rit1++;
+            if (rit2 != v2.rend()) rit2++;
+        }
+        
+        if (carry) res.push_front(carry);
+        
+        ListNode *rval = nullptr;
+        ListNode *tmp = nullptr;
+        
+        for (auto i : res)
+        {
+            ListNode *curr = new ListNode(i);
+            if (!tmp)
+            {
+                tmp = curr;
+                rval = curr;
+            }
+            else
+            {
+                tmp->next = curr;
+                tmp = tmp->next;
+            }
+        }
+        
+        return rval;
+    }
+};
