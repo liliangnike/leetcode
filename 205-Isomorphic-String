@@ -1,0 +1,53 @@
+/*
+Given two strings s and t, determine if they are isomorphic.
+
+Two strings s and t are isomorphic if the characters in s can be replaced to get t.
+
+All occurrences of a character must be replaced with another character while preserving the order of characters. No two characters may map to the same character, but a character may map to itself.
+*/
+
+// The solution idea is to unify the given strings into same one, suca as abaa
+
+// I also tried the solution that to collect the corrsponding index per character, this is not ok.
+
+class Solution {
+public:
+    bool isIsomorphic(string s, string t) {
+        unordered_map<char, char> sm;
+        unordered_map<char, char> tm;
+        
+        char init = 'a';
+        for (auto c : s)
+        {
+            if (sm.count(c) == 0)
+            {
+                sm[c] = init;
+                init++;
+            }
+        }
+        
+        for (int i = 0 ; i < s.size(); i++)
+        {
+            s[i] = sm[s[i]];
+        }
+        
+        
+        // reset init
+        init = 'a';
+        for (auto c : t)
+        {
+            if (tm.count(c) == 0)
+            {
+                tm[c] = init;
+                init++;
+            }
+        }
+        
+        for (int i = 0 ; i < t.size(); i++)
+        {
+            t[i] = tm[t[i]];
+        }
+        
+        return s == t;
+    }
+};
