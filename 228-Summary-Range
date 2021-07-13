@@ -1,0 +1,84 @@
+/*
+You are given a sorted unique integer array nums.
+
+Return the smallest sorted list of ranges that cover all the numbers in the array exactly. That is, each element of nums is covered by exactly one of the ranges, and there is no integer x such that x is in one of the ranges but not in nums.
+
+Each range [a,b] in the list should be output as:
+
+"a->b" if a != b
+"a" if a == b
+
+*/
+
+// I used a pair data structure to mark start and end of the range.
+// A little complicated, but faster than 100%
+
+class Solution {
+public:
+    vector<string> summaryRanges(vector<int>& nums) {
+        vector<string> ans;
+        vector<pair<int, int>> vec;
+        
+        if (nums.empty()) return ans;
+        
+        int sz = nums.size();
+        
+        if (sz == 1)
+        {
+            ans.push_back(to_string(nums[0]));
+            return ans;
+        }
+        
+        int prev = nums[0];
+        int start = nums[0];
+        
+        for (int i = 0; i < sz; i++)
+        {
+            if (nums[i] == prev)
+            {
+                continue;
+            }
+            else if (nums[i] == prev + 1)
+            {
+                if (i == sz - 1)
+                {
+                    pair<int, int> p = make_pair(start, nums[i]);
+                    vec.push_back(p);
+                }
+                prev = nums[i];
+            }
+            else
+            {
+                pair<int, int> p;
+               
+                p = make_pair(start, nums[i - 1]);
+                start = nums[i];
+                prev = nums[i];
+                vec.push_back(p);
+                
+                if (i == sz - 1)
+                {
+                    p = make_pair(start, start);
+                    vec.push_back(p);
+                }
+            }
+        }
+        
+        for (auto x : vec)
+        {
+            string str;
+            if (x.first == x.second)
+            {
+                str = to_string(x.first);
+            }
+            else
+            {
+                str = to_string(x.first) + "->" + to_string(x.second);
+            }
+            
+            ans.push_back(str);
+        }
+        
+        return ans;
+    }
+};
